@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Model Widget</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.2/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="widget" x-data="{ popularModel: 'Unknown', message: 'Click a button to get started.' }">
+        <h1>Most Popular Car Model In Stellenbosch</h1>
+        <button @click="findPopularModel()">Find Most Popular Model in Stellenbosch</button>
+        <div id="result">
+            <p x-text="message"></p>
+            <p x-show="popularModel !== 'Unknown'">Most Popular Car Model: <span x-text="popularModel"></span></p>
+        </div>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+

@@ -1,0 +1,19 @@
+{
+  "name": "car-crud-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "alpinejs": "^3.14.1",
+    "axios": "^1.7.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "mocha": "^10.7.0"
+  }
+}
