@@ -1,1 +1,3 @@
 # car-crud-app
+
+To set up my new widget API for most popular car model in Stellenbosch using Alpine.js, Axios, and Express, I followed these steps. First,I installed all necessary packages and dependencies. Next, I configured my Express server to handle API requests by defining endpoints in your API documentation. For example, create endpoints for fetching car details or submitting data. I used Axios in my front-end code to send requests to these endpoints and handle responses. The chosen function in this setup might be to retrieve car model information (registration number) from the server and display it in your widget. This way, users can interact with the widget to get up-to-date most popular car model in STellies  easily.
