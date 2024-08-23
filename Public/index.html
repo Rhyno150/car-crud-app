@@ -1,26 +1,160 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" x-data="carApp()">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car Model Widget</title>
+    <title>Car Management</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.12.2/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
-    <div id="widget" x-data="{ popularModel: 'Unknown', message: 'Click a button to get started.' }">
-        <h1>Most Popular Car Model In Stellenbosch</h1>
-        <button @click="findPopularModel()">Find Most Popular Model in Stellenbosch</button>
-        <div id="result">
-            <p x-text="message"></p>
-            <p x-show="popularModel !== 'Unknown'">Most Popular Car Model: <span x-text="popularModel"></span></p>
-        </div>
-    </div>
-    <script src="index.js"></script>
+    <h1>Car Management API</h1>
+
+    <h2>Create a New Car</h2>
+    <form @submit.prevent="createCar">
+        <label for="color">Color:</label>
+        <input type="text" id="color" x-model="newCar.color" required><br>
+
+        <label for="make">Make:</label>
+        <input type="text" id="make" x-model="newCar.make" required><br>
+
+        <label for="model">Model:</label>
+        <input type="text" id="model" x-model="newCar.model" required><br>
+
+        <label for="reg_number">Registration Number:</label>
+        <input type="text" id="reg_number" x-model="newCar.reg_number" required><br>
+
+        <button type="submit">Create Car</button>
+    </form>
+
+    <h2>Get All Cars</h2>
+    <button @click="getAllCars">Fetch All Cars</button>
+    <pre x-text="JSON.stringify(cars, null, 2)"></pre>
+
+    <h2>Update a Car</h2>
+    <form @submit.prevent="updateCar">
+        <label for="update_reg_number">Registration Number (to update):</label>
+        <input type="text" id="update_reg_number" x-model="updateCarData.reg_number" required><br>
+
+        <label for="update_color">New Color:</label>
+        <input type="text" id="update_color" x-model="updateCarData.color"><br>
+
+        <label for="update_make">New Make:</label>
+        <input type="text" id="update_make" x-model="updateCarData.make"><br>
+
+        <label for="update_model">New Model:</label>
+        <input type="text" id="update_model" x-model="updateCarData.model"><br>
+
+        <label for="update_new_reg_number">New Registration Number:</label>
+        <input type="text" id="update_new_reg_number" x-model="updateCarData.new_reg_number"><br>
+
+        <button type="submit">Update Car</button>
+    </form>
+
+    <h2>Delete a Car</h2>
+    <form @submit.prevent="deleteCar">
+        <label for="delete_reg_number">Registration Number (to delete):</label>
+        <input type="text" id="delete_reg_number" x-model="deleteRegNumber" required><br>
+
+        <button type="submit">Delete Car</button>
+    </form>
+
+    <h2>Get Most Popular CL</h2>
+    <button @click="getMostPopularCL">Fetch Most Popular CL</button>
+    <pre x-text="JSON.stringify(mostPopularCL, null, 2)"></pre>
+
+    <script>
+        function carApp() {
+            return {
+                newCar: {
+                    color: '',
+                    make: '',
+                    model: '',
+                    reg_number: ''
+                },
+                updateCarData: {
+                    reg_number: '',
+                    color: '',
+                    make: '',
+                    model: '',
+                    new_reg_number: ''
+                },
+                deleteRegNumber: '',
+                cars: [],
+                mostPopularCL: {},
+
+                async createCar() {
+                    try {
+                        const response = await axios.post('http://localhost:3000/cars', this.newCar);
+                        alert('Car created successfully!');
+                        this.resetNewCar();
+                    } catch (error) {
+                        console.error('Error creating car:', error);
+                        alert('Failed to create car.');
+                    }
+                },
+
+                async getAllCars() {
+                    try {
+                        const response = await axios.get('http://localhost:3000/cars');
+                        this.cars = response.data;
+                    } catch (error) {
+                        console.error('Error fetching cars:', error);
+                    }
+                },
+
+                async updateCar() {
+                    try {
+                        const regNumber = encodeURIComponent(this.updateCarData.reg_number);
+                        const data = {
+                            color: this.updateCarData.color,
+                            make: this.updateCarData.make,
+                            model: this.updateCarData.model,
+                            reg_number: this.updateCarData.new_reg_number
+                        };
+                        await axios.put(`http://localhost:3000/cars/${regNumber}`, data);
+                        alert('Car updated successfully!');
+                        this.resetUpdateCarData();
+                    } catch (error) {
+                        console.error('Error updating car:', error);
+                        alert('Failed to update car.');
+                    }
+                },
+
+                async deleteCar() {
+                    try {
+                        const regNumber = encodeURIComponent(this.deleteRegNumber);
+                        await axios.delete(`http://localhost:3000/cars/${regNumber}`);
+                        alert('Car deleted successfully!');
+                        this.deleteRegNumber = '';
+                    } catch (error) {
+                        console.error('Error deleting car:', error);
+                        alert('Failed to delete car.');
+                    }
+                },
+
+                async getMostPopularCL() {
+                    try {
+                        const response = await axios.get('http://localhost:3000/mostPopularCL');
+                        this.mostPopularCL = response.data;
+                    } catch (error) {
+                        console.error('Error fetching most popular CL:', error);
+                    }
+                },
+
+                resetNewCar() {
+                    this.newCar = { color: '', make: '', model: '', reg_number: '' };
+                },
+
+                resetUpdateCarData() {
+                    this.updateCarData = { reg_number: '', color: '', make: '', model: '', new_reg_number: '' };
+                }
+            }
+        }
+    </script>
 </body>
 </html>
-
 
 
 

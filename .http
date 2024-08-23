@@ -29,7 +29,7 @@ Content-Type: application/json
 }
 
 ### Delete a Car
-DELETE http://localhost:3000/cars/AB%2012345
+DELETE http://localhost:3000/cars/${reg_number}
 
 
 
